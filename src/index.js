@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // 1 :React.createContext() //提供一个全局变量 =》保存数据

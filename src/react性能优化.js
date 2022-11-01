@@ -28,7 +28,7 @@ class App extends React.Component{
          })
      }
     render(){
-        return(
+        return(  
             <div>
                 <FunctionMemo count={this.state.num}></FunctionMemo>
                 {/* <Counter count={this.state.num}></Counter> */}
