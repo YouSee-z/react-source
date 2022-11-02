@@ -13,7 +13,7 @@
   //实现
   // 1 将老的结构  通过map =>映射表 = {key:dom}
   // 2 创建一个lastPlaceIndex = 0 
-  // 3 遍历新的结构=》 去老的中查找 =》key   1 复用   2 重新生成
+  // 3 遍历新的结构=》 去老的中查找 =》key   1 复用   2 重新生成  
 
 
   import React from './react'

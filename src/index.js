@@ -1,41 +1,46 @@
- import React from 'react';
-import ReactDOM from 'react-dom';
+import React from './react';
+import ReactDOM from './react-dom';
 
-// 1 :React.createContext() //提供一个全局变量 =》保存数据
-let StateDate = React.createContext() // {}
+//memo
+//hook =》优化
 
-//2 在子组件中通过 React.useContext()
-//实现useContext；全局变量
-function Child() {
-    //子组价获取数据
-    console.log(StateDate)
-    let {num, setNum}= React.useContext(StateDate) //返回最新的数据
-    return (
-        <div>
-            <h1>{num}</h1>
-            <button onClick={() => {
-            setNum(num+1)
-            }}>点击</button>
-        </div>
+//1React.memo 检测组件的属性是否有改变
+//2 React.useMemo    React.useCallback
 
+function Chilrens({ data, handlerClick }) {
+    console.log('children render ', data)
+    return ( <
+        button onClick = { handlerClick } > { data.num } < /button>
     )
 }
-
+let ChildMemo = React.memo(Chilrens)
+    //useReducer
 function App() {
+
     let [num, setNum] = React.useState(0)
-    //根组件提供数据
-    return (
-        <StateDate.Provider value={{ num, setNum }}>
-            <div>
-                <h1>父亲</h1>
-                <Child></Child>
+    let [name, setName] = React.useState('悟空')
+        //通过useMemo检测num 值是否改变 1改变了=》APP组件就渲染新的数据 2没有改变渲染旧的数据
+    let data = React.useMemo(() => ({ num }), [num])
+        //通过useCallback检测num 值是否改变 1改变了=》APP组件就渲染新的handlerClick  2没有改变渲染旧的handlerClick 
+    let handlerClick = React.useCallback(() => {
+        setNum(num + 1)
+    }, [num])
+    return ( <
+        div >
+        <
+        ChildMemo data = { data }
+        handlerClick = { handlerClick } > < /ChildMemo> <
+        input type = "text"
+        value = { name }
+        onChange = {
+            (event) => {
+                setName(event.target.value)
+            }
+        } > < /input>
 
-            </div>
-
-        </StateDate.Provider>
-
+        <
+        /div>
     )
 }
 
-
-ReactDOM.render(<App></App>, document.getElementById('root'))
+ReactDOM.render( < App > < /App>, document.getElementById('root'))

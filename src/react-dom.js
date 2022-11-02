@@ -13,6 +13,7 @@ import React from './react'
 let hookSstate = [] //保存hook数据 function => useState()  [{num:0},{name:'悟空'}]
 
 let hookIndex = 0
+console.log(hookSstate, hookIndex)
 
 let schellUpdate //更新
     //初始化react 元素
@@ -49,7 +50,6 @@ export function useState(inistalState) { // inistalState 默认值
 export function useEffect(callback, deps) {
     let currentIndex = hookIndex //
     if (hookSstate[hookIndex]) { //获取老的数据
-        debugger
         let [destory, lastDeps] = hookSstate[hookIndex]
         let same = deps.every((dep, index) => dep === lastDeps[index])
         if (same) {
@@ -108,10 +108,10 @@ export function useReducer(reducer, inistalState) { // inistalState 默认值
         // hookSstate[currentIndex] = reducer(hookSstate[currentIndex], action) //获取新值 
         //获取老的数据
         let oldState = hookSstate[currentIndex]
-        if (reducer) {
+        if (reducer) { //无reducer 代表useState
             let newState = reducer(oldState, action)
             hookSstate[currentIndex] = newState
-        } else { //useState
+        } else { //无reducer 代表useState
             //
             let newState = typeof action == 'function' ? action(oldState) : action
             hookSstate[currentIndex] = newState
@@ -429,14 +429,14 @@ function updateElement(oldVnode, newVnode) {
     } else if (oldVnode.type.$$typeofs == REACT_CONTEXT) {
         updateContextComponent(oldVnode, newVnode)
     } else if (oldVnode.type == REACT_TEXT && newVnode.type == REACT_TEXT) { // 都为文本
-        let currentDom = newVnode.dom = findDOM(oldVnode) //na
+        let currentDom = newVnode.dom = findDOM(oldVnode)
             //获取新的文本的内容
         currentDom.textContent = newVnode.content // {content:55}
     } else if (typeof oldVnode.type == 'string') { //原生组件
         //复用老的节点  》 h
         let currentDom = newVnode.dom = findDOM(oldVnode)
             //更新属性
-        updataChildren(currentDom, oldVnode.props, newVnode.props)
+        updatePropos(currentDom, oldVnode.props, newVnode.props)
 
         // debugger
         //更新children
@@ -448,7 +448,7 @@ function updateElement(oldVnode, newVnode) {
             newVnode.classInstance = oldVnode.classInstance
                 //更新类组件
             updataClassComponent(oldVnode, newVnode)
-        } else { //函数组件
+        } else { //函数组件 
             updataFuncionComponent(oldVnode, newVnode)
         }
     }
